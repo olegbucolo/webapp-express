@@ -29,7 +29,6 @@ function show(req, res) {
                 name : r.name,
                 votes : r.vote,
                 reviews : r.text,
-
             }))
         }
         res.json([moviesJoinReviews])
