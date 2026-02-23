@@ -4,7 +4,7 @@ const router = express.Router();
 
 console.log('ROUTER ON')
 
-router.get('/', moviesController.index)
-router.get('/:id', moviesController.show)
+router.get('/', moviesController.index) // return all movies table
+router.get('/:id', moviesController.show) // return one object from movies + its reviews
 
 module.exports = router;

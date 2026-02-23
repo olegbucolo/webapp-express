@@ -10,7 +10,8 @@ let moviesRouter = require('./routes/moviesRouter')
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/api', moviesRouter);
+app.use('/movies', moviesRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`)

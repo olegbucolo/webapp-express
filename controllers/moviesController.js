@@ -1,6 +1,5 @@
 const connection = require('../data/db');
 
-
 function index(req, res) {
     const sql = 'SELECT * FROM movies'
 
@@ -19,6 +18,7 @@ function show(req, res) {
         WHERE movies.id = ?
         `
     connection.query(sql, [id], (err, results) => {
+
         if (err) return res.status(500).json({ error: "query failed" });
         if (results.length == 0) return res.status(404).json({ error: "post not found" });
 
