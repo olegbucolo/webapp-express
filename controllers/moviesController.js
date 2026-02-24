@@ -12,8 +12,26 @@ function index(req, res) {
 function show(req, res) {
     const id = req.params.id;
 
+    // const sql = `
+    //     SELECT movies.id, movies.title, reviews.name, reviews.vote, reviews.text FROM movies
+    //     JOIN reviews ON movies.id = reviews.movie_id
+    //     WHERE movies.id = ?
+    //     `
+
     const sql = `
-        SELECT movies.id, movies.title, reviews.name, reviews.vote, reviews.text FROM movies
+        SELECT 
+            movies.id AS movie_id,
+            movies.title,
+            movies.director,
+            movies.genre,
+            movies.release_year,
+            movies.abstract,
+            movies.image,
+            reviews.id AS review_id,
+            reviews.name,
+            reviews.vote,
+            reviews.text
+        FROM movies
         JOIN reviews ON movies.id = reviews.movie_id
         WHERE movies.id = ?
         `
@@ -23,15 +41,21 @@ function show(req, res) {
         if (results.length == 0) return res.status(404).json({ error: "post not found" });
 
         const moviesJoinReviews = {
-            id : results[0].id,
-            title : results[0].title,
+            id: results[0].id,
+            title: results[0].title,
+            director: results[0].director,
+            genre: results[0].genre,
+            release_year: results[0].release_year,
+            abstract: results[0].abstract,
+            image: results[0].image,
             reviews: results.map(r => ({
-                name : r.name,
-                votes : r.vote,
-                reviews : r.text,
+                id: r.id,
+                name: r.name,
+                vote: r.vote,
+                text: r.text,
             }))
         }
-        res.json([moviesJoinReviews])
+        res.json(moviesJoinReviews)
     })
 }
 
