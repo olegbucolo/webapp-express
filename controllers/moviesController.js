@@ -12,12 +12,6 @@ function index(req, res) {
 function show(req, res) {
     const id = req.params.id;
 
-    // const sql = `
-    //     SELECT movies.id, movies.title, reviews.name, reviews.vote, reviews.text FROM movies
-    //     JOIN reviews ON movies.id = reviews.movie_id
-    //     WHERE movies.id = ?
-    //     `
-
     const sql = `
         SELECT 
             movies.id AS movie_id,
@@ -49,7 +43,7 @@ function show(req, res) {
             abstract: results[0].abstract,
             image: results[0].image,
             reviews: results.map(r => ({
-                id: r.id,
+                id: r.review_id,
                 name: r.name,
                 vote: r.vote,
                 text: r.text,
@@ -59,4 +53,22 @@ function show(req, res) {
     })
 }
 
-module.exports = { index, show }
+function storeReview(req, res) {
+
+    const sql = `
+    INSERT INTO reviews (movie_id, name, vote, text) 
+    VALUES (?, ?, ?, ?);
+    `
+    const {id} = req.params;
+
+    const {name, text, vote} = req.body;
+    Number(vote);
+
+    connection.query(sql, [id, name, vote, text], (err, results) => {
+        if (err) return res.status(500).json({ error: "query failed" })
+        res.status(201);
+        res.json({ message: "review added", id: results.insertId })
+    })
+}
+
+module.exports = { index, show, storeReview }
